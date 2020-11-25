@@ -7,7 +7,8 @@ palette = {
 }
 
 players = ['','','','']
-cards = ['','','','']
+cards = []
+textInputs = []
 
 screenSize = [1080, 720]
 
@@ -23,6 +24,7 @@ def drawCards():
     for i in range(4):
         try:
             cards[i].draw()
+            textInputs[i].draw()
         except:
             print("ERROR: Could not draw card")
 
@@ -34,9 +36,9 @@ class Card:
         self.name = players[index]
         self.index = index
         self.cardColor = cardColor
-        self.x = x              #   X position
-        self.y = y              #   Y position
-        self.w = w              #   Width
+        self.x = x
+        self.y = y + (index * (h + spacing))
+        self.w = w
         self.h = h    
         self.spacing = spacing
         self.bevel = 7
@@ -45,20 +47,20 @@ class Card:
         fill(palette[self.cardColor])
         #self.hover() # Make it so that self.hover() doesn't affect fill when not hovered.
         noStroke()
-        rect(self.x, self.y + (self.index * ( self.h + self.spacing)), self.w, self.h, self.bevel)
+        rect(self.x, self.y, self.w, self.h, self.bevel)
     
     def shadow(self, radius, offsetX, offsetY, samples = 64):
         rectMode(CENTER)
         noStroke()
         fill(0,0,0,1)
         for i in range(samples):
-            rect(self.x + offsetX, self.y + (self.index* (self.h + self.spacing)) + offsetY, self.w + radius - i * .1, self.h + radius - i * .1, self.bevel)
+            rect(self.x + offsetX, self.y + offsetY, self.w + radius - i * .1, self.h + radius - i * .1, self.bevel)
 
 
 class TextInput:
 
     def __init__(self, index, x, y, w = 300 ,h = 50):
-        self.x = x              #   X position
+        self.x = x - 80        #   X position
         self.y = y              #   Y position
         self.w = w              #   Width
         self.h = h              #   Height
