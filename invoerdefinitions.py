@@ -11,6 +11,7 @@ cards = []
 textInputs = []
 
 screenSize = [1080, 720]
+index = 0
 
 def hover(a,b):
     isBetweenX = a[0] >= b[0] and a[0] <= b[0]+b[2]
@@ -68,7 +69,6 @@ class TextInput:
         self.padding = 15       #   Padding
         self.selected = False
         self.text = []
-        self.debounce = False
         self.maxLength = 15
         self.index = index
         self.forbiddenKeys = [ENTER, TAB, BACKSPACE]
@@ -87,8 +87,9 @@ class TextInput:
                 self.text.append(input)
             elif input == BACKSPACE:
                 self.text = self.text[:len(self.text)-1]
-            elif input == ENTER:
+            elif input == ENTER and self.selected == True:
                 global players
+                self.selected = False
                 temp = players[self.index]
                 players[self.index] = join(self.text, "")
                 print('Player ' + str(self.index) + '\'s name changed\nfrom: ' + temp + '\nto: ' + str(players[self.index]))
