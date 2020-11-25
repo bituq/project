@@ -74,9 +74,8 @@ class TextInput:
 
     def draw(self):
         stroke(1)
-        fill(255,255,255)
         rectMode(CENTER)
-        self.hover()
+        self.changeState()
         rect(self.x, self.y, self.w, self.h, self.bevel)
         self.displayText()
 
@@ -97,14 +96,21 @@ class TextInput:
         textAlign(LEFT, CENTER)
         textSize(20)
         text(join(self.text, ""), self.x + self.padding - self.w / 2, self.y)
-
+    
     def hover(self):
-        if hover([mouseX, mouseY],[self.x, self.y, self.w, self.h]):
+        if hover([mouseX,mouseY],[self.x - self.w / 2, self.y - self.h / 2, self.w, self.h]):
+            return True
+
+    def changeState(self):
+        if self.hover():
             fill(palette['light_blue'])
             cursor(TEXT)
         else:
-            fill(palette['white'])
+            fill(255,255,255)
             cursor(ARROW)
-        if self.selected or (hover([mouseX,mouseY],[self.x,self.y,self.w,self.h]) and mouseButton == LEFT):
+        if self.selected or (self.hover() and mouseButton == LEFT):
             fill(palette['gray'])
             self.selected = True
+        if self.selected and mouseButton == LEFT and not self.hover():
+            self.selected = False
+            fill(255,255,255)
